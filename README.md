@@ -1,60 +1,141 @@
+# Course Selling Website (with JWT Authentication & MongoDB)
 
-## Create a course selling website
+A simple course selling platform built with **Node.js**, **Express**, **MongoDB**, and **JWT authentication**. It supports role-based access for **Admins** and **Users**.
 
-### Description
+## Features
 
-Same as the last assignment but you need to use jwts for authentication.
-We have introduced the signgin endpoints for both users and admins.
-For this one, in every authenticated requests, you need to send the jwt in headers (Authorization : "Bearer <actual token>").
-You need to use mongodb to store all the data persistently.
+- JWT-based authentication for Admins and Users
+- Admins can:
+  - Sign up / Sign in
+  - Create new courses
+  - View all courses
+- Users can:
+  - Sign up / Sign in
+  - Browse available courses
+  - Purchase courses
+  - View purchased courses
 
-## Routes
+---
 
-### Admin Routes:
+## Technologies Used
 
-- POST /admin/signup
-  Description: Creates a new admin account.
-  Input Body: { username: 'admin', password: 'pass' }
-  Output: { message: 'Admin created successfully' }
+- Node.js
+- Express.js
+- MongoDB & Mongoose
+- JSON Web Tokens (JWT)
 
-- POST /admin/signin
-  Description: Logs in an admin account.
-  Input Body: { username: 'admin', password: 'pass' }
-  Output: { token: 'your-token' }
+---
 
-- POST /admin/courses
-  Description: Creates a new course.
-  Input: Headers: { 'Authorization': 'Bearer <your-token>' }, Body: { title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com' }
-  Output: { message: 'Course created successfully', courseId: "new course id" }
+## API Endpoints
 
-- GET /admin/courses
-  Description: Returns all the courses.
-  Input: Headers: { 'Authorization': 'Bearer <your-token>' }
-  Output: { courses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+### Admin Routes
 
-### User routes
+- **POST /admin/signup**
+  - Creates a new admin account  
+  - **Body**:  
+    ```json
+    { "username": "admin", "password": "pass" }
+    ```
 
-- POST /users/signup
-  Description: Creates a new user account.
-  Input: { username: 'user', password: 'pass' }
-  Output: { message: 'User created successfully' }
+- **POST /admin/signin**
+  - Logs in an admin  
+  - **Body**:  
+    ```json
+    { "username": "admin", "password": "pass" }
+    ```
+  - **Response**:  
+    ```json
+    { "token": "your-token" }
+    ```
 
-- POST /users/signin
-  Description: Logs in a user account.
-  Input: { username: 'user', password: 'pass' }
-  Output: { token: 'your-token' }
+- **POST /admin/courses**
+  - Creates a new course  
+  - **Headers**:  
+    `Authorization: Bearer <your-token>`  
+  - **Body**:  
+    ```json
+    {
+      "title": "course title",
+      "description": "course description",
+      "price": 100,
+      "imageLink": "https://linktoimage.com"
+    }
+    ```
 
-- GET /users/courses
-  Description: Lists all the courses.
-  Input: Headers: { 'Authorization': 'Bearer <your-token>' }
-  Output: { courses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+- **GET /admin/courses**
+  - Retrieves all courses  
+  - **Headers**:  
+    `Authorization: Bearer <your-token>`  
+  - **Response**:  
+    ```json
+    {
+      "courses": [
+        {
+          "id": 1,
+          "title": "course title",
+          "description": "course description",
+          "price": 100,
+          "imageLink": "https://linktoimage.com",
+          "published": true
+        }
+      ]
+    }
+    ```
 
-- POST /users/courses/:courseId
-  Description: Purchases a course. courseId in the URL path should be replaced with the ID of the course to be purchased.
-  Input: Headers: { 'Authorization': 'Bearer <your-token>' }
-  Output: { message: 'Course purchased successfully' }
-  
-- GET /users/purchasedCourses
-  Description: Lists all the courses purchased by the user.
-  Input: Headers: { 'Authorization': 'Bearer <your-token>' }
-  Output: { purchasedCourses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+---
+
+### User Routes
+
+- **POST /users/signup**
+  - Creates a new user account  
+  - **Body**:  
+    ```json
+    { "username": "user", "password": "pass" }
+    ```
+
+- **POST /users/signin**
+  - Logs in a user  
+  - **Body**:  
+    ```json
+    { "username": "user", "password": "pass" }
+    ```
+  - **Response**:  
+    ```json
+    { "token": "your-token" }
+    ```
+
+- **GET /users/courses**
+  - Lists all available courses  
+  - **Headers**:  
+    `Authorization: Bearer <your-token>`  
+
+- **POST /users/courses/:courseId**
+  - Purchases a course by ID  
+  - **Headers**:  
+    `Authorization: Bearer <your-token>`  
+  - **Response**:  
+    ```json
+    { "message": "Course purchased successfully" }
+    ```
+
+- **GET /users/purchasedCourses**
+  - Lists all purchased courses  
+  - **Headers**:  
+    `Authorization: Bearer <your-token>`  
+  - **Response**:  
+    ```json
+    {
+      "purchasedCourses": [
+        {
+          "id": 1,
+          "title": "course title",
+          "description": "course description",
+          "price": 100,
+          "imageLink": "https://linktoimage.com",
+          "published": true
+        }
+      ]
+    }
+    ```
+
+---
